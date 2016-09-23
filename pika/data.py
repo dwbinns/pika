@@ -204,7 +204,9 @@ def decode_value(encoded, offset):
         offset += 1
 
     # Short Int
-    elif kind == b'U':
+    elif kind == b's':
+        # Differing from AMQP 0-9-1, see RabbitMQ's errata:
+        # https://www.rabbitmq.com/amqp-0-9-1-errata.html#section_3
         value = struct.unpack_from('>h', encoded, offset)[0]
         offset += 2
 
@@ -253,6 +255,7 @@ def decode_value(encoded, offset):
 
     # Short String
     elif kind == b's':
+        # No longer reachable, not defined for RabbitMQ
         value, offset = decode_short_string(encoded, offset)
 
     # Long String
